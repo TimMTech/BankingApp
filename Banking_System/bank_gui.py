@@ -57,7 +57,6 @@ def register():
     register_screen.title("Register")
     register_screen.geometry('300x250+600+500')
 
-
     #labels
     Label(register_screen, text="Please Enter Your Details Below", font=("Calibri",12)).grid(row=0,sticky=N,pady=10)
     Label(register_screen, text="Name", font=("Calibri",12)).grid(row=1,sticky=W)
@@ -147,16 +146,22 @@ def finish_deposit():
     file = open(username, "r+")
     file_data = file.read()
     details = file_data.split('\n')
+    current_name = details[0]
+    current_password = details[1]
+    current_age = details[2]
+    current_gender = details[3]
     current_balance = details[4]
     updated_balance = current_balance
     updated_balance = Decimal(updated_balance) + Decimal(amount.get())
-    file_data = file_data.replace(current_balance, str(updated_balance))
-    file.seek(0)
-    file.truncate(0)
-    file.write(file_data)
-    file.close()
+    new_file = open(username, "w")
+    new_file.write(current_name + '\n')
+    new_file.write(current_password + '\n')
+    new_file.write(current_age + '\n')
+    new_file.write(current_gender + '\n')
+    new_file.write(str(updated_balance))
+    new_file.close()
 
-    current_balance_label.config(text="Current Balance: $"+str(Decimal(updated_balance)), fg="green")
+    current_balance_label.config(text="Current Balance: $"+str(updated_balance), fg="green")
     deposit_notif.config(text="Balance Updated", fg="green")
 
 def withdraw():
@@ -198,6 +203,10 @@ def finish_withdraw():
     file = open(username, "r+")
     file_data = file.read()
     details = file_data.split('\n')
+    current_name = details[0]
+    current_password = details[1]
+    current_age = details[2]
+    current_gender = details[3]
     current_balance = details[4]
 
     if Decimal(withdraw_amount.get()) > Decimal(current_balance):
@@ -206,13 +215,15 @@ def finish_withdraw():
 
     updated_balance = current_balance
     updated_balance = Decimal(updated_balance) - Decimal(withdraw_amount.get())
-    file_data = file_data.replace(current_balance, str(updated_balance))
-    file.seek(0)
-    file.truncate(0)
-    file.write(file_data)
-    file.close()
+    new_file = open(username, "w")
+    new_file.write(current_name + '\n')
+    new_file.write(current_password + '\n')
+    new_file.write(current_age + '\n')
+    new_file.write(current_gender + '\n')
+    new_file.write(str(updated_balance))
+    new_file.close()
 
-    current_balance_label.config(text="Current Balance: $"+str(Decimal(updated_balance)), fg="green")
+    current_balance_label.config(text="Current Balance: $"+str(updated_balance), fg="green")
     withdraw_notif.config(text="Balance Updated", fg="green")
 
 def personal_details():
