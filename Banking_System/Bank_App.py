@@ -1,6 +1,5 @@
 '''
-1.  CREATE A FORGOT USERNAME OR PASSWORD SECTION
-  a. Create a drop down menu for type of recovery question.
+1.  Create a change username/password option in Account Dashboard
 2.  RESIZE APPLICATION(MAKE IT MORE REALISTIC)
   a. Test 500x500 geometry, but also center windows.
 '''
@@ -133,6 +132,7 @@ def login_session():
                 Button(account_dashboard, text="Personal Details",font=("Calibri",12),width=30,command=personal_details).grid(row=3,sticky=N,pady=5)
                 Button(account_dashboard, text="Deposit",font=("Calibri",12),width=30,command=deposit).grid(row=4,sticky=N,pady=5)
                 Button(account_dashboard, text="Withdraw",font=("Calibri",12),width=30,command=withdraw).grid(row=5,sticky=N,pady=5)
+                Button(account_dashboard, text="Change Password",font=("Calibri",12),width=30,command=change_pass).grid(row=6,sticky=N,pady=5)
 
 
                 return
@@ -211,8 +211,6 @@ def withdraw():
     user_details = file_data.split('\n')
     details_balance = user_details[4]
 
-
-
     # Withdraw Screen
     withdraw_screen = Toplevel(master)
     withdraw_screen.title("Withdraw")
@@ -264,6 +262,37 @@ def finish_withdraw():
 
     current_balance_label.config(text="Current Balance: $"+str(updated_balance), fg="green")
     withdraw_notif.config(text="Balance Updated", fg="green")
+
+def change_pass():
+    global new_password_notif
+    file = open(username, 'r')
+    file_data = file.read()
+    user_details = file_data.split('\n')
+    current_password = user_details[1]
+    new_password = StringVar()
+
+    # Change Pass Screen
+    change_pass_screen = Toplevel(master)
+    change_pass_screen.title("Change Your Password")
+    change_pass_screen.geometry('270x200+600+350')
+
+    # Labels
+    Label(change_pass_screen, text="Enter Your Password Below", font=("Calibri", 12)).grid(row=1, sticky=N)
+    Label(change_pass_screen, text="Password", font=("Calibri", 12)).grid(row=3, sticky=W)
+    Label(change_pass_screen, text="Enter Your New Password Below", font=("Calibri", 12)).grid(row=4, sticky=N)
+    Label(change_pass_screen, text="New Password", font=("Calibri", 12)).grid(row=5, sticky=W)
+    new_password_notif = Label(change_pass_screen, font=("Calibri", 12))
+    new_password_notif.grid(row=7, sticky=N, pady=5)
+
+
+    # Entry
+    Entry(change_pass_screen, textvariable=current_password, width=10,show='*').grid(row=3)
+    Entry(change_pass_screen, textvariable=new_password, width=10,show='*').grid(row=5, padx=90)
+
+    #Button
+    Button(change_pass_screen, text="Finish", font=("Calibri",12),command='').grid(row=6,sticky=N)
+
+#def success_session():
 
 def personal_details():
     #Vars
@@ -391,8 +420,6 @@ def recovery_session():
                 recovery_notif.config(fg="red", text="Answer Incorrect!!")
                 return
     recovery_notif.config(fg="red", text="No Account Found!!")
-
-
 
 
 #Image Import
